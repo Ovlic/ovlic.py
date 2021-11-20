@@ -7,13 +7,13 @@ def bracket(message):
 
 def glitch(message):
     from .src.glitch import font
-    table = message.maketrans(font)#glitch.font)
+    table = message.maketrans(font)
     msg = message.translate(table)
     return msg
 
 def bubbletext(message):
     from .src.bubbletext import font
-    table = message.maketrans(font)#glitch.font)
+    table = message.maketrans(font)
     msg = message.translate(table)
     return msg
 
@@ -25,13 +25,13 @@ def fancy(message):
 
 def emojify(message):
     from .src.emojifytext import font
-    table = message.maketrans(font)#glitch.font)
+    table = message.maketrans(font)
     msg = message.translate(table)
     return msg
 
 def franktur(message):
     from .src.franktur import font
-    table = message.maketrans(font)#glitch.font)
+    table = message.maketrans(font)
     msg = message.translate(table)
     return msg
 
@@ -42,7 +42,9 @@ def spoiler(message):
     return msg
 
 def strike(message):
-    return f"~~{message}~~"
+    """Needs to be fixed"""
+    return
+    #return f"~~{message}~~"
 
 def subscript(message):
     from .src.subscript import font
