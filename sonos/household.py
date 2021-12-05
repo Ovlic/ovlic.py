@@ -1,4 +1,6 @@
 
+import logging
+
 from . import abc
 from . import control
 from .group import Group
@@ -34,7 +36,7 @@ class Household(abc.BaseHousehold):
     Represents a household of Sonos devices.
     """
     def __init__(self, data):
-        "Initialize a household."
+        self.logger = logging.getLogger(__name__)
         self._id = data['id']
     
     def __repr__(self) -> str:

@@ -8,7 +8,6 @@ import logging
 
 class Group(abc.BaseGroup):
     def __init__(self, data):
-        print("\n\n\n\n\n\n")
         self.logger = logging.getLogger(__name__)
         self.data = data
         self._id = self.data['id']
@@ -52,7 +51,6 @@ class Group(abc.BaseGroup):
         """
         self.logger.info("Muting group..")
         res = control.post(self, endpoint="/groups/{}/groupVolume/mute".format(self._id), params={"muted":mute})
-        print(res)
         self.logger.info("Muted group.")
         return res
 

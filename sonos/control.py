@@ -39,6 +39,10 @@ def raise_err(response):
     if errorCode == "ERROR_BAD_REQUEST" or status_code == 400:
         raise errors.BadRequest(reason)
     elif errorCode == "ERROR_UNAUTHORIZED" or status_code == 401:
+        if reason == "Invalid Access Token":
+            raise errors.InvalidAccessToken()
+        if reason == "Invalid Refresh Token":
+            raise errors.InvalidRefreshToken()
         raise errors.Unauthorized(reason)
     elif errorCode == "ERROR_FORBIDDEN" or status_code == 403:
         raise errors.Forbidden(reason)
@@ -102,8 +106,8 @@ def get(endpoint, **kwargs):
         return response.json()
     else:
         logger.error("Failed to get request from Sonos API.")
-        print(response.text)
-        print(response.status_code)
+        # print(response.text)
+        # print(response.status_code)
         raise_err(response)
 
 
@@ -128,8 +132,8 @@ def post(endpoint, params:dict):
         return response.json()
     else:
         logger.error("Failed to post request to Sonos API.")
-        print(response.status_code)
-        print(response.text)
+        # print(response.status_code)
+        # print(response.text)
         raise_err(response)
 
 def subscribe(namespace, endpoint):
@@ -207,7 +211,7 @@ def verify_access_token(access_token):
         logger.debug("Successfully verified access token.")
         return response.json()
     else:
-        logger.error("Failed to verify access token.")
+        logger.error("Invalid access token.")
         raise_err(response)
 
 

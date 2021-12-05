@@ -1,6 +1,6 @@
 import requests, urllib
 from .. import errors
-from .. import abc
+from . import abc
 
 
 
@@ -185,6 +185,7 @@ class nyt:
 
         for k in range(0, len(res['results'])):
             mediatype = "multimedia" if "multimedia" in res['results'][k] else "media-metadata" if "media-metadata" in res['results'][k] else None
+            print(mediatype, end="\n")
             if not mediatype: continue
             res['results'][k]['media'] = res['results'][k].pop(mediatype)
             res['results'][k] = nyt.article(res['results'][k])

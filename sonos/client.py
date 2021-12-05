@@ -1,4 +1,5 @@
 
+import base64
 import logging
 
 from . import config
@@ -18,6 +19,8 @@ class Client:
         self.client_id = kwargs.get('client_id')
         self.client_secret = kwargs.get('client_secret')
         self.redirect_uri = kwargs.get('redirect_uri')
+        base_bytes = base64.b64encode(f"{self.client_id}:{self.client_secret}".encode('ascii'))
+        self.auth_key = str(base_bytes.decode())
 
         self.logger.info('Verifying access token...')
         try:
@@ -28,7 +31,7 @@ class Client:
                 self.logger.error('No refresh token provided, cannot refresh access token')
                 raise errors.InvalidAccessToken
             try:
-                refr = control.refresh_access_token()
+                refr = control.refresh_access_token(self.refresh_token, self.auth_key)
                 self.access_token = refr['access_token']
             except:
                 self.logger.error('Failed to refresh access token')
@@ -45,7 +48,7 @@ class Client:
         """
         Returns a list of households
         """
-        self.logger.info("Getting households..")
+        self.logger.info("Getting households...")
         req = control.get(endpoint="/households")
         res = []
         for household in req['households']:
@@ -57,6 +60,6 @@ class Client:
         """
         Returns the first household found.
         """
-        self.logger.info("Getting household ...")
+        self.logger.info("Getting household...")
         req = control.get(endpoint="/households")
         return Household(req['households'][0])

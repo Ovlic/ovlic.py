@@ -15,6 +15,7 @@ from . import errors
 from . import utils
 from . import abc
 from .auth import Authorization
+from .client import Client
 from .group import Group
 from .household import Household
 from .player import Player

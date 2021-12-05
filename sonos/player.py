@@ -5,37 +5,35 @@ import logging
 import json
 import xmltodict
 
-class Player(abc.BasePlayer):
-    """
-    Represents a Sonos player.
-    """
-    def __init__(self, data):
-        print(data)
-        self.logger = logging.getLogger(__name__)
-        self._apiVersion = data['apiVersion']
-        self._deviceIds = data['deviceIds']
-        self._icon = data['icon'] if 'icon' in data else None
-        self._id = data['id']
-        self._minApiVersion = data['minApiVersion']
-        self._name = data['name']
-        self._softwareVersion = data['softwareVersion']
-        self._websocketUrl = data['websocketUrl']
-        self._capabilities = data['capabilities']
-        self._ip = self._websocketUrl.split("//")[1].split(":")[0]
-        info = control.get_device_info(self._ip)['root']['device']
-        self._macAddress['MACAddress']
-        self._serialNumber['serialNum']
-        self._model['modelName']
-        self._modelNumber['modelNumber']
-        self._displayName['displayName']
-        self._softwareVersion['softwareVersion']
-        self._hardwareVersion['hardwareVersion']
+class Player:  # (abc.BasePlayer): # abc.BasePlayer is not working.
+   """
+   Represents a Sonos player.
+   """
+   def __init__(self, data):
+      self.logger = logging.getLogger(__name__)
+      self._apiVersion = data['apiVersion']
+      self._deviceIds = data['deviceIds']
+      self._icon = data['icon'] if 'icon' in data else None
+      self._id = data['id']
+      self._minApiVersion = data['minApiVersion']
+      self._name = data['name']
+      self._softwareVersion = data['softwareVersion']
+      self._websocketUrl = data['websocketUrl']
+      self._capabilities = data['capabilities']
+      self._ip = self._websocketUrl.split("//")[1].split(":")[0]
+      info = control.get_device_info(self._ip)['root']['device']
+      self._macAddress = info['MACAddress']
+      self._serialNumber = info['serialNum']
+      self._model = info['modelName']
+      self._modelNumber = info['modelNumber']
+      self._displayName = info['displayName']
+      self._hardwareVersion = info['hardwareVersion']
 
 
-        "http://192.168.1.26:1400/xml/device_description.xml"
+      "http://192.168.1.26:1400/xml/device_description.xml"
 
-        # TODO: Add more properties from json below 
-        """
+      # TODO: Add more properties from json below 
+      """
    {
    "root":{
       "@xmlns":"urn:schemas-upnp-org:device-1-0",
@@ -263,110 +261,143 @@ SL Media Renderer",
 }
         """
 
-    @property
-    def apiVersion(self) -> str:
-        "The highest API version supported by the player."
-        return self._apiVersion
+   @property
+   def apiVersion(self) -> str:
+      "The highest API version supported by the player."
+      return self._apiVersion
 
-    @property
-    def deviceIds(self) -> list:
-        "The IDs of all bonded devices corresponding to this logical player."
-        return self._deviceIds
+   @property
+   def deviceIds(self) -> list:
+      "The IDs of all bonded devices corresponding to this logical player."
+      return self._deviceIds
 
-    @property
-    def icon(self) -> str:
-        """
-        An identifier for the player icon. Set when the user chooses a pre-defined room for the player. You can map this to an icon to display in your app for the player. Values include any of the following:
-        Note: Sonos sends `generic` if the user set up a custom room in the Sonos app.
-        + bathroom
-        + bedroom
-        + den
-        + diningroom
-        + familyroom
-        + foyer
-        + garage
-        + garden
-        + generic
-        + guestroom
-        + hallway
-        + kitchen
-        + library
-        + livingroom
-        + masterbedroom
-        + mediaroom
-        + office
-        + patio
-        + playroom
-        + pool
-        + tvroom
-        + portable
-        """
-        return self._icon
+   @property
+   def icon(self) -> str:
+      """
+      An identifier for the player icon. Set when the user chooses a pre-defined room for the player. You can map this to an icon to display in your app for the player. Values include any of the following:
+      Note: Sonos sends `generic` if the user set up a custom room in the Sonos app.
+      + bathroom
+      + bedroom
+      + den
+      + diningroom
+      + familyroom
+      + foyer
+      + garage
+      + garden
+      + generic
+      + guestroom
+      + hallway
+      + kitchen
+      + library
+      + livingroom
+      + masterbedroom
+      + mediaroom
+      + office
+      + patio
+      + playroom
+      + pool
+      + tvroom
+      + portable
+      """
+      return self._icon
 
-    @property
-    def id(self) -> str:
-        "The ID of the player."
-        return self._id
+   @property
+   def id(self) -> str:
+      "The ID of the player."
+      return self._id
 
-    @property
-    def minApiVersion(self) -> str:
-        "The lowest API version supported by the player."
-        return self._minApiVersion
+   @property
+   def minApiVersion(self) -> str:
+      "The lowest API version supported by the player."
+      return self._minApiVersion
 
-    @property
-    def name(self) -> str:
-        "The display name for the player. For example, “Living Room”, “Kitchen”, or “Dining Room”."
-        return self._name
+   @property
+   def name(self) -> str:
+      "The display name for the player. For example, “Living Room”, “Kitchen”, or “Dining Room”."
+      return self._name
 
-    @property
-    def softwareVersion(self) -> str:
-        "The version of the software running on the device."
-        return self._softwareVersion
+   @property
+   def websocketUrl(self) -> str:
+      "The URL for the Websocket connection."
+      return self._websocketUrl
 
-    @property
-    def websocketUrl(self) -> str:
-        "The URL for the Websocket connection."
-        return self._websocketUrl
+   @property
+   def capabilities(self) -> abc.Capabilities:
+      "The capabilities of the player."
+      return self._capabilities
 
-    @property
-    def capabilities(self) -> abc.Capabilities:
-        "The capabilities of the player."
-        return self._capabilities
+   @property
+   def ipAddress(self) -> str:
+      "The IP address of the player."
+      return self._ip
+
+   @property
+   def macAddress(self) -> str:
+      "The MAC address of the player."
+      return self._macAddress
+
+   @property
+   def serialNumber(self) -> str:
+      "The serial number of the player."
+      return self._serialNumber
+
+   @property
+   def model(self) -> str:
+      "The model name of the player."
+      return self._model
+
+   @property
+   def modelNumber(self) -> str:
+      "The model number of the player."
+      return self._modelNumber
+
+   @property
+   def displayName(self) -> str:
+      "The display name of the player."
+      return self._displayName
+   
+   @property
+   def softwareVersion(self) -> str:
+      "The software version of the player."
+      return self._softwareVersion
+
+   @property
+   def hardwareVersion(self) -> str:
+      "The hardware version of the player."
+      return self._hardwareVersion
+
 
         
-    """def playerVolumeSubscribe(self):
-        \"""
-        Subscribe to the players's playerVolume events.
-        \"""
-        from ovlic.sonos import control
+   """def playerVolumeSubscribe(self):
+      \"""
+      Subscribe to the players's playerVolume events.
+      \"""
+      from ovlic.sonos import control
 
-        self.logger.info("Subscribing to player's playerVolume events..")
-        res = control.post(self, endpoint="/players/{}/playerVolume/subscription".format(self._id), params={})
-        return res"""
+      self.logger.info("Subscribing to player's playerVolume events..")
+      res = control.post(self, endpoint="/players/{}/playerVolume/subscription".format(self._id), params={})
+      return res"""
 
-    def loadAudioClip(self, name:str, appId="com.ovlic.app", clipType:abc.AudioClipType="CHIME", httpAuthorization:str=None, priority:abc.Priority=abc.Priority.default(), streamUrl:str=None, volume:int=None) -> abc.AudioClip:
-        """
-        Load an audio clip into the player.
-        """
-        params = {
-            "name": name,
-            "appId": appId,
-            "clipType": clipType,
-            "priority": priority,
-        }
+   def loadAudioClip(self, name:str, appId="com.ovlic.app", clipType:abc.AudioClipType="CHIME", httpAuthorization:str=None, priority:abc.Priority=abc.Priority.default(), streamUrl:str=None, volume:int=None) -> abc.AudioClip:
+      """
+      Load an audio clip into the player.
+      """
+      params = {
+         "name": name,
+         "appId": appId,
+         "clipType": clipType,
+         "priority": priority,
+      }
 
-        if httpAuthorization is not None:
-            params["httpAuthorization"] = httpAuthorization
+      if httpAuthorization is not None:
+         params["httpAuthorization"] = httpAuthorization
 
-        if streamUrl is not None:
-            params["streamUrl"] = streamUrl
+      if streamUrl is not None:
+         params["streamUrl"] = streamUrl
 
-        if volume is not None:
-            params["volume"] = volume
+      if volume is not None:
+         params["volume"] = volume
 
-        self.logger.info("Loading audio clip..")
-        res = control.post(self, endpoint="/players/{}/loadAudioClip".format(self._id), params=params)
-        return res
-    
-    
-
+      self.logger.info("Loading audio clip..")
+      res = control.post(self, endpoint="/players/{}/loadAudioClip".format(self._id), params=params)
+      return res
